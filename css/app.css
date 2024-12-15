@@ -1,0 +1,49 @@
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+.navbar {
+    z-index: 10000;
+    position: fixed;
+    width: 100%;
+}
+
+header {
+    color: white;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+header .btn-primary {
+    background-color: #ff5722;
+    border: none;
+}
+header .btn-primary:hover {
+    background-color: #e64a19;
+}
+
+#bg-web {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+  }
+  
+#texto_web {
+    margin-top: 10%;
+    position: fixed;
+    color: #f1f1f1;
+    width: 100%;
+    padding: 20px;
+}
+
+footer {
+    background: #212121;
+}
+footer p {
+    margin-bottom: 0;
+}
