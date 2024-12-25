@@ -58,7 +58,7 @@ footer p {
     margin-bottom: 0;
 }
 
-#videos {
+.spacingWebFix {
     margin-top: 60px;
     padding: 20px;
 }
