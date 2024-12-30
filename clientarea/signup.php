@@ -1,3 +1,39 @@
+<?php
+include '../admin/dbconf.php';
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST['nameForm'];
+    $surname = $_POST['surnameForm'];
+    $email = $_POST['emailForm'];
+    $username = $_POST['userForm'];
+    $password = $_POST['passwdForm'];
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    $checkEmailStmt = $conn->prepare("SELECT email FROM users WHERE email = ?");
+    $checkEmailStmt->bind_param("s", $email);
+    $checkEmailStmt->execute();
+    $checkEmailStmt->store_result();
+
+    if ($checkEmailStmt->num_rows > 0) {
+        echo '<script>alert("¡Este correo ya esta registrado!")</script>';
+    } else {
+        $stmt = $conn->prepare("INSERT INTO users (username, password, name, surname, email) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $username, $hashed_password, $name, $surname, $email);
+
+        if ($stmt->execute()) {
+            echo '<script>alert("¡Tu cuenta ha sido creada con exito! Ya puedes iniciar sesion desde Area de Cliente")</script>';
+        } else {
+            echo '<script>alert("No hemos podido crear tu cuenta, contacta con nosotros para mas informacion")</script>';
+        }
+
+        $stmt->close();
+    }
+
+    $checkEmailStmt->close();
+    $conn->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -21,33 +57,33 @@
                             Registrarse
                         </h1>
                         <br>
-                        <form style="text-align: left;">
+                        <form method="post" style="text-align: left;">
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="nameFrom"><strong>Nombre:</strong></label>
-                                <input type="text" id="nameForm" class="form-control"  />
+                                <input type="text" name="nameForm" class="form-control"  />
                             </div>
 
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="surnameFrom"><strong>Apellido 1:</strong></label>
-                                <input type="text" id="surnameForm" class="form-control"  />
+                                <input type="text" name="surnameForm" class="form-control"  />
                             </div>
 
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="emailForm"><strong>Correo Electronico:</strong></label>
-                                <input type="text" id="emailForm" class="form-control"  />
+                                <input type="text" name="emailForm" class="form-control"  />
                             </div>
                             
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="userFrom"><strong>Usuario:</strong></label>
-                                <input type="text" id="userForm" class="form-control"  />
+                                <input type="text" name="userForm" class="form-control"  />
                             </div>
 
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="passwdForm"><strong>Contraseña:</strong></label>
-                                <input type="password" id="passwdForm" class="form-control" />
+                                <input type="password" name="passwdForm" class="form-control" />
                             </div>
 
-                            <button type="button" data-mdb-button-init data-mdb-ripple-init
+                            <button type="submit" data-mdb-button-init data-mdb-ripple-init
                                 class="btn btn-primary btn-block mb-4">Registrarse</button>
 
                             <div class="text-center">
