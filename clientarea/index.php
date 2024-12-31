@@ -1,3 +1,19 @@
+<?php
+include '../admin/dbconf.php';
+session_start();
+
+if (!isset($_SESSION['emailAccount'])) { 
+    header('Location: signin.php');
+    exit();
+}
+
+$email = $_SESSION['emailAccount'];
+$sql = "SELECT name FROM users WHERE email = '$email'";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);$name = $row['name'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -28,9 +44,10 @@
                     </li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-info" onclick="location.href = '/clientarea/signin.html';">Area de Clientes</button>
+            <button type="button" class="btn btn-danger" onclick="location.href = '/clientarea/logout.php';">Cerrar Sesion</button>
         </div>
     </nav>
+    <?php echo("<h4>Hola, $name</h4>") ?>
     <div class="container spacingWebFix">
         <h2 class="text-center">Tutoriales de Reparacion</h2>
         <div class="row">

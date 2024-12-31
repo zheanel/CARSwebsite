@@ -1,3 +1,35 @@
+<?php
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    include '../admin/dbconf.php';        
+    $email = mysqli_real_escape_string($conn, $_POST['emailForm']);
+    $password = mysqli_real_escape_string($conn, $_POST['passwdForm']);
+
+    $query = "SELECT * FROM users WHERE email='$email' LIMIT 1";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        if (mysqli_num_rows($result) == 1) {
+            $row = mysqli_fetch_assoc($result);
+            
+            $hashedPassword = $row['password'];
+            
+            if (password_verify($password, $hashedPassword)) {
+                $_SESSION['emailAccount'] = $email;
+                header("location: index.php");
+                exit();
+            } else {
+                echo '<script>alert("Contraseña Incorrecta")</script>';
+            }
+        } else {
+            echo '<script>alert("Correo Electronico Incorrecto")</script>';
+        }
+    } else {
+        echo '<script>alert("No se puede procesar su solicitud en estos momentos")</script>';
+    }
+}
+?>
+</html>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -24,17 +56,17 @@
                             Introduzca sus credenciales para continuar
                         </h4>
                         <br>
-                        <form style="text-align: left;">
+                        <form method="post" style="text-align: left;">
                             <div data-mdb-input-init class="form-outline mb-4">
-                                <label class="form-label" for="userFrom"><strong>Usuario:</strong></label>
-                                <input type="text" id="userForm" class="form-control"  />
+                                <label class="form-label" for="emailForm"><strong>Correo Electronico:</strong></label>
+                                <input type="text" name="emailForm" class="form-control"  />
                             </div>
 
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="passwdForm"><strong>Contraseña:</strong></label>
-                                <input type="password" id="passwdForm" class="form-control" />
+                                <input type="password" name="passwdForm" class="form-control" />
                             </div>
-                            <button type="button" data-mdb-button-init data-mdb-ripple-init
+                            <button type="submit" data-mdb-button-init data-mdb-ripple-init
                                 class="btn btn-primary btn-block mb-4">Iniciar Sesion</button>
 
                             <div class="text-center">
