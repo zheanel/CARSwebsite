@@ -2,7 +2,7 @@
 include '../admin/dbconf.php';
 session_start();
 
-if (!isset($_SESSION['emailAccount'])) { 
+if (!isset($_SESSION['emailAccount'])) {
     header('Location: signin.php');
     exit();
 }
@@ -51,7 +51,13 @@ $resultpayments = $stmtPayments->get_result();
     </nav>
     <div class="container spacingWebFix">
         <h2 class="text-center">Historial de pagos</h2>
-        <h6 class="text-center"><?php echo("Llevas $resultpayments->num_rows meses suscrito a la plataforma") ?></h6>
+        <h6 class="text-center">
+            <?php if ($resultpayments->num_rows > 0) {
+                echo ("Llevas $resultpayments->num_rows mese(s) suscrito a la plataforma");
+            } else {
+                echo ("Nunca has estado suscrito a la plataforma");
+            } ?>
+        </h6>
         <table class="table table-striped">
             <thead>
                 <tr>

@@ -28,7 +28,7 @@
                     </li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-info" onclick="location.href = '/clientarea/signin.php';">Area de Clientes</button>
+            <button type="button" class="btn btn-info" onclick="location.href = 'clientarea/signin.php';">Area de Clientes</button>
         </div>
     </nav>
     <video autoplay muted loop id="bg-web">
