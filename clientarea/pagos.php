@@ -39,10 +39,10 @@ $resultpayments = $stmtPayments->get_result();
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.php">Tutoriales</a>
+                        <a class="nav-link" href="index.php">Tutoriales</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pagos.php">Historial Pagos</a>
+                        <a class="nav-link active" href="pagos.php">Historial Pagos</a>
                     </li>
                 </ul>
             </div>
