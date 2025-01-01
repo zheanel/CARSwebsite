@@ -1,4 +1,4 @@
-<h6?php
+<?php
 include '../admin/dbconf.php';
 session_start();
 
