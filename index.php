@@ -21,14 +21,14 @@
                         <a class="nav-link active" href="#">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="reviews.html">Videos</a>
+                        <a class="nav-link" href="reviews.php">Videos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contacto.html">Contacto</a>
+                        <a class="nav-link" href="contacto.php">Contacto</a>
                     </li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-info" onclick="location.href = '/clientarea/signin.html';">Area de Clientes</button>
+            <button type="button" class="btn btn-info" onclick="location.href = '/clientarea/signin.php';">Area de Clientes</button>
         </div>
     </nav>
     <video autoplay muted loop id="bg-web">

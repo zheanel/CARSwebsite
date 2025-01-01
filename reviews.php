@@ -21,17 +21,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Inicio</a>
+                        <a class="nav-link" href="index.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="reviews.html">Videos</a>
+                        <a class="nav-link active" href="reviews.php">Videos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contacto.html">Contacto</a>
+                        <a class="nav-link" href="contacto.php">Contacto</a>
                     </li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-info" onclick="location.href = '/clientarea/signin.html';">Area de Clientes</button>
+            <button type="button" class="btn btn-info" onclick="location.href = '/clientarea/signin.php';">Area de Clientes</button>
         </div>
     </nav>
     <div class="container spacingWebFix">

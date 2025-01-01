@@ -37,14 +37,14 @@ $row = mysqli_fetch_assoc($result);$name = $row['name'];
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="tutoriales.html">Tutoriales</a>
+                        <a class="nav-link active" href="index.php">Tutoriales</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pagos.html">Historial Pagos</a>
+                        <a class="nav-link" href="pagos.php">Historial Pagos</a>
                     </li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-danger" onclick="location.href = '/clientarea/logout.php';">Cerrar Sesion</button>
+            <button type="button" class="btn btn-danger" onclick="location.href = 'logout.php';">Cerrar Sesion</button>
         </div>
     </nav>
     <?php echo("<h4>Hola, $name</h4>") ?>

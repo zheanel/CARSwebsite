@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 class="btn btn-primary btn-block mb-4">Registrarse</button>
 
                             <div class="text-center">
-                                <p>¿Ya eres cliente? <a href="/clientarea/signin.html">Iniciar Sesion</a></p>
+                                <p>¿Ya eres cliente? <a href="signin.php">Iniciar Sesion</a></p>
                             </div>
                         </form>
                     </div>
