@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: signin.php');
         exit();
     }
-    
+
     $email = $_SESSION['emailAccount'];
     $sql = "
         INSERT INTO transactions
@@ -20,6 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ";
     $result = mysqli_query($conn, $sql);
     $conn->close();
+    echo "<script>
+    alert('Pago completado con exito!');
+    setTimeout(function() {
+        window.location.href = 'index.php';
+    }, 250);
+</script>";
+
 }
 ?>
 

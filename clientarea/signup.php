@@ -6,7 +6,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['nameForm'];
     $surname = $_POST['surnameForm'];
     $email = $_POST['emailForm'];
-    $username = $_POST['userForm'];
     $password = $_POST['passwdForm'];
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -18,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($checkEmailStmt->num_rows > 0) {
         echo '<script>alert("¡Este correo ya esta registrado!")</script>';
     } else {
-        $stmt = $conn->prepare("INSERT INTO users (username, password, name, surname, email) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $username, $hashed_password, $name, $surname, $email);
+        $stmt = $conn->prepare("INSERT INTO users (password, name, surname, email) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $hashed_password, $name, $surname, $email);
 
         if ($stmt->execute()) {
             echo '<script>alert("¡Tu cuenta ha sido creada con exito! Ya puedes iniciar sesion desde Area de Cliente")</script>';
@@ -71,11 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div data-mdb-input-init class="form-outline mb-4">
                                 <label class="form-label" for="emailForm"><strong>Correo Electronico:</strong></label>
                                 <input type="text" name="emailForm" class="form-control"  />
-                            </div>
-                            
-                            <div data-mdb-input-init class="form-outline mb-4">
-                                <label class="form-label" for="userFrom"><strong>Usuario:</strong></label>
-                                <input type="text" name="userForm" class="form-control"  />
                             </div>
 
                             <div data-mdb-input-init class="form-outline mb-4">
