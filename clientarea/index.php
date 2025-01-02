@@ -99,7 +99,7 @@ $name = $row['name'];
                                 ¡No tienes una suscripcion activa!
                             </h3>
                             <p>No hemos podido encontrar ningun pago registrado en su cuenta, puede ser que seas un nuevo cliente.</p>
-                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Realizar Pago</button>
+                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4" onclick="location.href = 'paynow.php';">Realizar Pago</button>
                         </div>
                     </div>
                 </div>

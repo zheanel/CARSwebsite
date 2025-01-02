@@ -53,7 +53,7 @@ $resultpayments = $stmtPayments->get_result();
         <h2 class="text-center">Historial de pagos</h2>
         <h6 class="text-center">
             <?php if ($resultpayments->num_rows > 0) {
-                echo ("Llevas $resultpayments->num_rows mese(s) suscrito a la plataforma");
+                echo ("Llevas $resultpayments->num_rows mes(es) suscrito a la plataforma");
             } else {
                 echo ("Nunca has estado suscrito a la plataforma");
             } ?>
