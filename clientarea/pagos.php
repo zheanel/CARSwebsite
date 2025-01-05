@@ -9,7 +9,7 @@ if (!isset($_SESSION['emailAccount'])) {
 
 $email = $_SESSION['emailAccount'];
 
-$payments = "SELECT date, payment_amount FROM transactions WHERE userid = (SELECT id FROM users WHERE email = ?)";
+$payments = "SELECT date, payment_amount, method FROM transactions WHERE userid = (SELECT id FROM users WHERE email = ?)";
 $stmtPayments = $conn->prepare($payments);
 $stmtPayments->bind_param("s", $email);
 $stmtPayments->execute();
@@ -52,8 +52,10 @@ $resultpayments = $stmtPayments->get_result();
     <div class="container spacingWebFix">
         <h2 class="text-center">Historial de pagos</h2>
         <h6 class="text-center">
-            <?php if ($resultpayments->num_rows > 0) {
-                echo ("Llevas $resultpayments->num_rows mes(es) suscrito a la plataforma");
+            <?php if ($resultpayments->num_rows === 1) {
+                echo ("Llevas $resultpayments->num_rows mes suscrito a la plataforma");
+            } else if ($resultpayments->num_rows > 1) {
+                echo ("Llevas $resultpayments->num_rows meses suscrito a la plataforma");
             } else {
                 echo ("Nunca has estado suscrito a la plataforma");
             } ?>
@@ -63,7 +65,8 @@ $resultpayments = $stmtPayments->get_result();
                 <tr>
                     <th>Fecha</th>
                     <th>Cantidad (€)</th>
-                    <th>Correo Asociado</th>
+                    <th>Correo Electronico</th>
+                    <th>Metodo de Pago</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,6 +77,7 @@ $resultpayments = $stmtPayments->get_result();
                         echo "<td>" . htmlspecialchars($row['date']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['payment_amount']) . "</td>";
                         echo "<td>" . htmlspecialchars($email) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['method']) . "</td>";
                         echo "</tr>";
                     }
                 } else {

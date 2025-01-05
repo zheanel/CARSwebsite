@@ -17,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($checkEmailStmt->num_rows > 0) {
         echo '<script>alert("¡Este correo ya esta registrado!")</script>';
     } else {
-        $stmt = $conn->prepare("INSERT INTO users (password, name, surname, email) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $hashed_password, $name, $surname, $email);
+        $stmt = $conn->prepare("INSERT INTO users (name, surname, email, password) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $name, $surname, $email, $hashed_password);
 
         if ($stmt->execute()) {
             echo '<script>alert("¡Tu cuenta ha sido creada con exito! Ya puedes iniciar sesion desde Area de Cliente")</script>';
