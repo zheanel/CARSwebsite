@@ -8,12 +8,12 @@ if (!isset($_SESSION['godMode'])) {
 }
 
 $email = $_SESSION['godMode'];
-$sql = "SELECT name FROM users WHERE email = '$email' and isadmin = 1";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($result);
-$name = $row['name'];
-?>
 
+$videos = "SELECT title, description, s3url, type, created_on FROM videos";
+$stmtvideos = $conn->prepare($videos);
+$stmtvideos->execute();
+$resultvideos = $stmtvideos->get_result();
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -30,7 +30,7 @@ $name = $row['name'];
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container container-fluid">
-            <a class="navbar-brand" href="#">CARS</a>
+            <a class="navbar-brand" href="#">CARS - Administracion</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -38,75 +38,52 @@ $name = $row['name'];
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.php">Tutoriales</a>
+                        <a class="nav-link active" href="index.php">Listado de Videos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="pagos.php">Historial Pagos</a>
+                        <a class="nav-link" href="addvideo.php">Agregar Video</a>
                     </li>
                 </ul>
             </div>
             <button type="button" class="btn btn-danger" onclick="location.href = 'logout.php';">Cerrar Sesion</button>
         </div>
     </nav>
+    <div class="container spacingWebFix">
+    <h5 class="text-center">
+        <strong>Listado de videos subidos</strong>
+    </h5>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Descripcion</th>
+                    <th>Tipo</th>
+                    <th>Fecha de Subida</th>
+                    <th>Enlace</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($resultvideos && $resultvideos->num_rows > 0) {
+                    while ($row = $resultvideos->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($row['title']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['description']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['type']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['created_on']) . "</td>";
+                        echo '<td><a href="' . htmlspecialchars($row['s3url']) . '" class="btn btn-primary">Ver Recurso</a></td>';
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='5' class='text-center'>No existen videos en la plataforma.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-    <?php
-    //Compruebo si esta suscrito a la plataforma
-    $checkSuscription = "SELECT * FROM transactions WHERE userid = (SELECT id FROM users WHERE email = '$email')";
-    $isSubscribed = mysqli_query($conn, $checkSuscription);
-    if (mysqli_num_rows($isSubscribed) > 0) {
-        ?>
-        <?php echo ("<h4>Hola, $name</h4>"); ?>
-        <div class="container spacingWebFix">
-            <h2 class="text-center">Tutoriales de Reparacion</h2>
-            <div class="row">
-                <div class="col-sm-6 mb-3 mb-sm-0 mb3">
-                    <div class="card">
-                        <div class="card-body">
-                            <video width="100%" height="240" controls>
-                                <source src="srcS3AWS" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <h5 class="card-title">Video Title</h5>
-                            <p class="card-text">Description_here.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 mb-3 mb-sm-0 mb3">
-                    <div class="card">
-                        <div class="card-body">
-                            <video width="100%" height="240" controls>
-                                <source src="msrcS3AWS" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <h5 class="card-title">Video Title</h5>
-                            <p class="card-text">Description_here.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php
-    } else {
-        // User is not subscribed, display the login form
-        ?>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 mx-auto">
-                    <div class="card mt-5">
-                        <div class="card-body text-center">
-                            <h3 class="text-danger">
-                                ¡No tienes una suscripcion activa!
-                            </h3>
-                            <p>No hemos podido encontrar ningun pago registrado en su cuenta, puede ser que seas un nuevo cliente.</p>
-                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4" onclick="location.href = 'paynow.php';">Realizar Pago</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-    ?>
 
 
     <!-- Footer -->

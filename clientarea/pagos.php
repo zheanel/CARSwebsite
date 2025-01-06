@@ -81,7 +81,7 @@ $resultpayments = $stmtPayments->get_result();
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='3' class='text-center'>No se encontraron pagos.</td></tr>";
+                    echo "<tr><td colspan='4' class='text-center'>No se encontraron pagos.</td></tr>";
                 }
                 ?>
             </tbody>
