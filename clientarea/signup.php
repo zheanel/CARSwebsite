@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="../css/app.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-secondary">
     <div class="container">
         <div class="row">
             <div class="col-md-6 mx-auto">

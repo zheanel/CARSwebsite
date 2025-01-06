@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $_POST['emailForm']);
     $password = mysqli_real_escape_string($conn, $_POST['passwdForm']);
 
-    $query = "SELECT * FROM users WHERE email='$email' LIMIT 1";
+    $query = "SELECT * FROM users WHERE email='$email' and isadmin=1 LIMIT 1";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
@@ -15,14 +15,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashedPassword = $row['password'];
             
             if (password_verify($password, $hashedPassword)) {
-                $_SESSION['emailAccount'] = $email;
+                $_SESSION['godMode'] = $email;
                 header("location: index.php");
                 exit();
             } else {
                 echo '<script>alert("Contraseña Incorrecta")</script>';
             }
         } else {
-            echo '<script>alert("Correo Electronico Incorrecto")</script>';
+            echo '<script>alert("Este usuario no es administrador")</script>';
         }
     } else {
         echo '<script>alert("No se puede procesar su solicitud en estos momentos")</script>';
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="card-body text-center">
                         <img src="../media/img/logo.png" class="img-fluid mb-3" style="max-width: 250px;">
                         <h1 class="text-success">
-                            Area de Clientes
+                            Zona de Administracion
                         </h1>
                         <h4>
                             Introduzca sus credenciales para continuar
@@ -68,10 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <button type="submit" data-mdb-button-init data-mdb-ripple-init
                                 class="btn btn-primary btn-block mb-4">Iniciar Sesion</button>
-
-                            <div class="text-center">
-                                <p>¿Eres nuevo? <a href="signup.php">Registrarse</a></p>
-                            </div>
                         </form>
                     </div>
                 </div>
