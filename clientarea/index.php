@@ -7,12 +7,6 @@ if (!isset($_SESSION['emailAccount'])) {
     exit();
 }
 
-$email = $_SESSION['emailAccount'];
-$sql = "SELECT name FROM users WHERE email = '$email'";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($result);
-$name = $row['name'];
-
 $getVideos = "SELECT title, description, s3url FROM videos WHERE type='REPARACION'";
 $obtainedVideos = mysqli_query($conn, $getVideos);
 
@@ -59,7 +53,6 @@ $obtainedVideos = mysqli_query($conn, $getVideos);
     $isSubscribed = mysqli_query($conn, $checkSuscription);
     if (mysqli_num_rows($isSubscribed) > 0) {
         ?>
-        <?php echo ("<h4>Hola, $name</h4>"); ?>
         <div class="container spacingWebFix">
             <h2 class="text-center">Tutoriales de Reparacion</h2>
             <div class="row">
