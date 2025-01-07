@@ -7,6 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $query = "SELECT * FROM users WHERE email='$email' LIMIT 1";
     $result = mysqli_query($conn, $query);
+    $estadoPeticion= "";
 
     if ($result) {
         if (mysqli_num_rows($result) == 1) {
@@ -19,13 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("location: index.php");
                 exit();
             } else {
-                echo '<script>alert("Contraseña Incorrecta")</script>';
+                $estadoPeticion = "Contraseña incorrecta";
             }
         } else {
-            echo '<script>alert("Correo Electronico Incorrecto")</script>';
+            $estadoPeticion = "Correo electronico no valido";
         }
     } else {
-        echo '<script>alert("No se puede procesar su solicitud en estos momentos")</script>';
+        $estadoPeticion = "No hemos podido procesar tu peticion en estos momentos";
     }
 }
 ?>
@@ -55,6 +56,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <h4>
                             Introduzca sus credenciales para continuar
                         </h4>
+                        <?php if (!empty($estadoPeticion)): ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <?php echo htmlspecialchars($estadoPeticion); ?>
+                            </div>
+                        <?php endif; ?>
                         <br>
                         <form method="post" style="text-align: left;">
                             <div data-mdb-input-init class="form-outline mb-4">

@@ -1,5 +1,6 @@
 <?php
 session_start();
+$estadoPeticion= "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include '../admin/dbconf.php';        
     $email = mysqli_real_escape_string($conn, $_POST['emailForm']);
@@ -19,13 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("location: index.php");
                 exit();
             } else {
-                echo '<script>alert("Contraseña Incorrecta")</script>';
+                $estadoPeticion="Su contraseña no es correcta";
             }
         } else {
-            echo '<script>alert("Este usuario no es administrador")</script>';
+            $estadoPeticion="Este usuario no existe o no tiene los privilegios requeridos";
         }
     } else {
-        echo '<script>alert("No se puede procesar su solicitud en estos momentos")</script>';
+        $estadoPeticion= "No se puede procesar su solicitud en estos momentos";
     }
 }
 ?>
@@ -55,6 +56,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <h4>
                             Introduzca sus credenciales para continuar
                         </h4>
+                        <?php if (!empty($estadoPeticion)): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo htmlspecialchars($estadoPeticion); ?>
+                            </div>
+                        <?php endif; ?>
                         <br>
                         <form method="post" style="text-align: left;">
                             <div data-mdb-input-init class="form-outline mb-4">

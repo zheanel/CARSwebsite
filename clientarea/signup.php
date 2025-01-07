@@ -1,6 +1,7 @@
 <?php
 include '../admin/dbconf.php';
-
+$estadoPeticion= "";
+$tipoEstado = "alert-danger";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['nameForm'];
@@ -15,15 +16,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $checkEmailStmt->store_result();
 
     if ($checkEmailStmt->num_rows > 0) {
-        echo '<script>alert("¡Este correo ya esta registrado!")</script>';
+        $estadoPeticion = "Este correo electronico ya esta registrado, utilize otro.";
     } else {
         $stmt = $conn->prepare("INSERT INTO users (name, surname, email, password) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $name, $surname, $email, $hashed_password);
 
         if ($stmt->execute()) {
-            echo '<script>alert("¡Tu cuenta ha sido creada con exito! Ya puedes iniciar sesion desde Area de Cliente")</script>';
+            $tipoEstado="alert-success";
+            $estadoPeticion = "¡Cuenta creada con exito!";
         } else {
-            echo '<script>alert("No hemos podido crear tu cuenta, contacta con nosotros para mas informacion")</script>';
+            $estadoPeticion = "No hemos podido crear tu cuenta, contacta con nosotros para mas informacion";
         }
 
         $stmt->close();
@@ -55,6 +57,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <h1 class="text-success">
                             Registrarse
                         </h1>
+                        <?php if (!empty($estadoPeticion)): ?>
+                            <div class="alert <?php echo $tipoEstado ?>" role="alert">
+                                <?php echo htmlspecialchars($estadoPeticion); ?>
+                                <?php if ($tipoEstado === "alert-success") {
+                                    echo '<a href="signin.php">Acceder al area de cliente</a>';
+                                } ?>
+                            </div>
+                        <?php endif; ?>
                         <br>
                         <form method="post" style="text-align: left;">
                             <div data-mdb-input-init class="form-outline mb-4">

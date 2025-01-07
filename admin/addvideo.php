@@ -1,6 +1,8 @@
 <?php
 include '../admin/dbconf.php';
 session_start();
+$estadoPeticion = "";
+$tipoEstado = "alert-danger";
 
 if (!isset($_SESSION['godMode'])) {
     header('Location: login.php');
@@ -20,9 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $resultvideoUpload = $stmtvideoUpload->get_result();
 
     if ($stmtvideoUpload->execute()) {
-        echo '<script>alert("¡Video agregado con exito!")</script>';
+        $tipoEstado = "alert-success";
+        $estadoPeticion = "¡Video $title agregado con exito!";
     } else {
-        echo '<script>alert("Se ha producido un error al subir el video")</script>';
+        $estadoPeticion="Se ha producido un error al subir el video";
     }
 }
 ?>
@@ -50,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                        <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Gestion Contenido
                         </a>
@@ -71,6 +74,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h5 class="text-center">
             <strong>Agregar nuevo video a la plataforma</strong>
         </h5>
+        <?php if (!empty($estadoPeticion)): ?>
+            <div class="alert <?php echo $tipoEstado ?>" role="alert">
+                <?php echo htmlspecialchars($estadoPeticion); ?>
+            </div>
+        <?php endif; ?>
         <form method="post">
             <div class="mb-3">
                 <label for="title" class="form-label">Titulo:</label>

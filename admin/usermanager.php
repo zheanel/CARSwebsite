@@ -26,11 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sqlDelUser= "DELETE FROM users WHERE id = ? and isadmin = 0";
         $stmtdelete = $conn->prepare($sqlDelUser);
         $stmtdelete->bind_param("i", $userEmail);
+        $tipoEstado = "alert-suc";
+        $estadoPeticion = "El usuario con correo $userEmail ha sido eleminado con exito";
     }   if ($stmtdelete->execute()) {
         header('Location: usermanager.php');
-        } else {
-        echo ("<script>alert(Error al eliminar el usuario)</script>");
-    }
+        }
 
 }
 
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                        <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Gestion Contenido
                         </a>
