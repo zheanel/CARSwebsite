@@ -1,3 +1,8 @@
+<?php
+include 'admin/dbconf.php';
+$getVideos = "SELECT title, description, s3url FROM videos WHERE type='REVIEW'";
+$obtainedVideos = mysqli_query($conn, $getVideos);
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -31,36 +36,33 @@
                     </li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-info" onclick="location.href = 'clientarea/signin.php';">Area de Clientes</button>
+            <button type="button" class="btn btn-info" onclick="location.href = 'clientarea/signin.php';">Area de
+                Clientes</button>
         </div>
     </nav>
     <div class="container spacingWebFix">
         <h2 class="text-center">Reviews de Vehiculos</h2>
         <div class="row">
-            <div class="col-sm-6 mb-3 mb-sm-0 mb3">
-                <div class="card">
-                    <div class="card-body">
-                        <video width="100%" height="240" controls>
-                            <source src="srcS3AWS" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <h5 class="card-title">Video Title</h5>
-                        <p class="card-text">Description_here.</p>
+
+            <?php
+            while ($rows = $obtainedVideos->fetch_assoc()) {
+                ?>
+
+                <div class="col-sm-6 mb-3 mb-sm-0 mb3">
+                    <div class="card">
+                        <div class="card-body">
+                            <video width="100%" height="240" controls>
+                                <source src="<?php echo $rows['s3url']; ?>" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <h5 class="card-title"><?php echo $rows['title']; ?></h5>
+                            <p class="card-text"><?php echo $rows['description']; ?></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6 mb-3 mb-sm-0 mb3">
-                <div class="card">
-                    <div class="card-body">
-                        <video width="100%" height="240" controls>
-                            <source src="msrcS3AWS" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <h5 class="card-title">Video Title</h5>
-                        <p class="card-text">Description_here.</p>
-                    </div>
-                </div>
-            </div>
+                <?php
+            }
+            ?>
         </div>
     </div>
 

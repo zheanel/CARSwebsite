@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $email = $_SESSION['emailAccount'];
     $sql = "
-        INSERT INTO transactions
+        INSERT INTO transactions (userid, date, payment_amount)
         VALUES (
             (SELECT id FROM users WHERE email = '$email'),
             NOW(),

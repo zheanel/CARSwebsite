@@ -12,6 +12,10 @@ $sql = "SELECT name FROM users WHERE email = '$email'";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
 $name = $row['name'];
+
+$getVideos = "SELECT title, description, s3url FROM videos WHERE type='REPARACION'";
+$obtainedVideos = mysqli_query($conn, $getVideos);
+
 ?>
 
 
@@ -54,41 +58,34 @@ $name = $row['name'];
     $checkSuscription = "SELECT * FROM transactions WHERE userid = (SELECT id FROM users WHERE email = '$email')";
     $isSubscribed = mysqli_query($conn, $checkSuscription);
     if (mysqli_num_rows($isSubscribed) > 0) {
-        // User is subscribed, display the HTML content
         ?>
         <?php echo ("<h4>Hola, $name</h4>"); ?>
         <div class="container spacingWebFix">
             <h2 class="text-center">Tutoriales de Reparacion</h2>
             <div class="row">
-                <div class="col-sm-6 mb-3 mb-sm-0 mb3">
-                    <div class="card">
-                        <div class="card-body">
-                            <video width="100%" height="240" controls>
-                                <source src="srcS3AWS" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <h5 class="card-title">Video Title</h5>
-                            <p class="card-text">Description_here.</p>
+                <?php
+                while ($rows = $obtainedVideos->fetch_assoc()) {
+                    ?>
+
+                    <div class="col-sm-6 mb-3 mb-sm-0 mb3">
+                        <div class="card">
+                            <div class="card-body">
+                                <video width="100%" height="240" controls>
+                                    <source src="<?php echo $rows['s3url']; ?>" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <h5 class="card-title"><?php echo $rows['title']; ?></h5>
+                                <p class="card-text"><?php echo $rows['description']; ?></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6 mb-3 mb-sm-0 mb3">
-                    <div class="card">
-                        <div class="card-body">
-                            <video width="100%" height="240" controls>
-                                <source src="msrcS3AWS" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <h5 class="card-title">Video Title</h5>
-                            <p class="card-text">Description_here.</p>
-                        </div>
-                    </div>
-                </div>
+                    <?php
+                }
+                ?>
             </div>
         </div>
         <?php
     } else {
-        // User is not subscribed, display the login form
         ?>
         <div class="container">
             <div class="row">
@@ -98,8 +95,11 @@ $name = $row['name'];
                             <h3 class="text-danger">
                                 ¡No tienes una suscripcion activa!
                             </h3>
-                            <p>No hemos podido encontrar ningun pago registrado en su cuenta, puede ser que seas un nuevo cliente.</p>
-                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4" onclick="location.href = 'paynow.php';">Realizar Pago</button>
+                            <p>No hemos podido encontrar ningun pago registrado en su cuenta, puede ser que seas un nuevo
+                                cliente.</p>
+                            <button type="submit" data-mdb-button-init data-mdb-ripple-init
+                                class="btn btn-primary btn-block mb-4" onclick="location.href = 'paynow.php';">Realizar
+                                Pago</button>
                         </div>
                     </div>
                 </div>
