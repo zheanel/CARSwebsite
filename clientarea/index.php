@@ -6,7 +6,7 @@ if (!isset($_SESSION['emailAccount'])) {
     header('Location: signin.php');
     exit();
 }
-
+$email = $_SESSION['emailAccount'];
 $getVideos = "SELECT title, description, s3url FROM videos WHERE type='REPARACION'";
 $obtainedVideos = mysqli_query($conn, $getVideos);
 
