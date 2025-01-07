@@ -9,10 +9,24 @@ if (!isset($_SESSION['godMode'])) {
 
 $email = $_SESSION['godMode'];
 
-$videos = "SELECT title, description, s3url, type, created_on FROM videos";
+$videos = "SELECT id, title, description, s3url, type, created_on FROM videos";
 $stmtvideos = $conn->prepare($videos);
 $stmtvideos->execute();
 $resultvideos = $stmtvideos->get_result();
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $videoID= $_POST['videoID'];
+    $sqlDel= "DELETE FROM videos WHERE id = ?";
+    $stmtdelete = $conn->prepare($sqlDel);
+    $stmtdelete->bind_param("i", $videoID);
+    if ($stmtdelete->execute()) {
+        header('Location: index.php');
+    } else {
+        echo ("<script>alert(Error al eliminar el video seleccionado)</script>");
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +57,9 @@ $resultvideos = $stmtvideos->get_result();
                     <li class="nav-item">
                         <a class="nav-link" href="addvideo.php">Agregar Video</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="usermanager.php">Gestionar Usuarios</a>
+                    </li>
                 </ul>
             </div>
             <button type="button" class="btn btn-danger" onclick="location.href = 'logout.php';">Cerrar Sesion</button>
@@ -60,7 +77,7 @@ $resultvideos = $stmtvideos->get_result();
                     <th>Descripcion</th>
                     <th>Tipo</th>
                     <th>Fecha de Subida</th>
-                    <th>Enlace</th>
+                    <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,7 +89,7 @@ $resultvideos = $stmtvideos->get_result();
                         echo "<td>" . htmlspecialchars($row['description']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['type']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['created_on']) . "</td>";
-                        echo '<td><a href="' . htmlspecialchars($row['s3url']) . '" class="btn btn-primary">Ver Recurso</a></td>';
+                        echo '<td><a href="' . htmlspecialchars($row['s3url']) . '" class="btn btn-primary">Ver Recurso</a> <form method="post"><button type="submit" name="videoID" value="' . htmlspecialchars($row['id']) . '" class="btn btn-danger">Eliminar</button></form></td>';
                         echo "</tr>";
                     }
                 } else {
