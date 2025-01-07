@@ -31,10 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
         echo ("<script>alert(Error al eliminar el usuario)</script>");
     }
-    //Elimino Datos del Usuario
-    $sqlDelUser= "DELETE FROM users WHERE id = ? and isadmin = 0";
-    $stmtdelete = $conn->prepare($sqlDelUser);
-    $stmtdelete->bind_param("i", $userEmail);
 
 }
 
