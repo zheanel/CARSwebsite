@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Footer -->
     <footer class="bg-dark text-light py-3">
         <div class="container text-center">
-            <p class="mb-0">&copy; 2024 CARS. Todos los derechos reservados</p>
+            <p class="mb-0">&copy; <?php echo date("Y"); ?> CARS. Todos los derechos reservados</p>
         </div>
     </footer>
 

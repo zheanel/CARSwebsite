@@ -60,39 +60,41 @@ $resultpayments = $stmtPayments->get_result();
                 echo ("Nunca has estado suscrito a la plataforma");
             } ?>
         </h6>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Cantidad (€)</th>
-                    <th>Correo Electronico</th>
-                    <th>Metodo de Pago</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($resultpayments && $resultpayments->num_rows > 0) {
-                    while ($row = $resultpayments->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['date']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['payment_amount']) . "</td>";
-                        echo "<td>" . htmlspecialchars($email) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['method']) . "</td>";
-                        echo "</tr>";
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Cantidad (€)</th>
+                        <th>Correo Electronico</th>
+                        <th>Metodo de Pago</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($resultpayments && $resultpayments->num_rows > 0) {
+                        while ($row = $resultpayments->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['date']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['payment_amount']) . "</td>";
+                            echo "<td>" . htmlspecialchars($email) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['method']) . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='4' class='text-center'>No se encontraron pagos.</td></tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='4' class='text-center'>No se encontraron pagos.</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-3">
         <div class="container text-center">
-            <p class="mb-0">&copy; 2024 CARS. Todos los derechos reservados</p>
+            <p class="mb-0">&copy; <?php echo date("Y"); ?> CARS. Todos los derechos reservados</p>
         </div>
     </footer>
 
