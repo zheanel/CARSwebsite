@@ -14,7 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = trim($_POST['description']);
     $s3url = trim($_POST['s3url']);
     $type = trim($_POST['videoType']);
-    $uploadVideo = "INSERT INTO videos (title, description, s3url, type) VALUES (?, ?, ?, ?)";    $stmtvideoUpload = $conn->prepare($uploadVideo);
+    $uploadVideo = "INSERT INTO videos (title, description, s3url, type) VALUES (?, ?, ?, ?)";
+    $stmtvideoUpload = $conn->prepare($uploadVideo);
     $stmtvideoUpload->bind_param("ssss", $title, $description, $s3url, $type);
     $resultvideoUpload = $stmtvideoUpload->get_result();
 
@@ -48,11 +49,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Listado de Videos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="addvideo.php">Agregar Video</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestion Contenido
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item" href="index.php">Mostrar Videos</a></li>
+                            <li><a class="dropdown-item active" href="#">Añadir Video</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="usermanager.php">Gestionar Usuarios</a>

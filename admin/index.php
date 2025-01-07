@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container container-fluid">
             <a class="navbar-brand" href="#">CARS - Administracion</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -51,11 +51,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.php">Listado de Videos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="addvideo.php">Agregar Video</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Gestion Contenido
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <li><a class="dropdown-item active" href="#">Mostrar Videos</a></li>
+                            <li><a class="dropdown-item" href="addvideo.php">Añadir Video</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="usermanager.php">Gestionar Usuarios</a>
