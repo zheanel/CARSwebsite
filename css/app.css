@@ -2,10 +2,14 @@ body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
 }
-.navbar {
+
+.navbarFixed {
     z-index: 10000;
     position: fixed;
     width: 100%;
+    top: 0;
+    height: 60px;
+    background-color: #007BFF;
 }
 
 header {
@@ -17,10 +21,12 @@ header {
     align-items: center;
     text-align: center;
 }
+
 header .btn-primary {
     background-color: #ff5722;
     border: none;
 }
+
 header .btn-primary:hover {
     background-color: #e64a19;
 }
@@ -31,8 +37,8 @@ header .btn-primary:hover {
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
-  }
-  
+}
+
 #texto_web {
     margin-top: 10%;
     position: fixed;
@@ -42,8 +48,18 @@ header .btn-primary:hover {
 }
 
 footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     background: #212121;
 }
+
 footer p {
     margin-bottom: 0;
 }
+
+.spacingWebFix {
+    margin-top: 60px;
+    padding: 20px;
+}
+
