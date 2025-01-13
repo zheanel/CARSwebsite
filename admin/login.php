@@ -1,18 +1,21 @@
 <?php
 session_start();
-$estadoPeticion= "";
+$estadoPeticion = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include '../admin/dbconf.php';        
-    $email = mysqli_real_escape_string($conn, $_POST['emailForm']);
-    $password = mysqli_real_escape_string($conn, $_POST['passwdForm']);
-
-    $query = "SELECT * FROM users WHERE email='$email' and isadmin=1 LIMIT 1";
-    $result = mysqli_query($conn, $query);
-
-    if ($result) {
-        if (mysqli_num_rows($result) == 1) {
-            $row = mysqli_fetch_assoc($result);
-            
+    $email = trim($_POST['emailForm']);
+    $password = trim($_POST['passwdForm']);
+    
+    $query = "SELECT * FROM users WHERE email = ? AND isadmin = 1 LIMIT 1";
+    $stmt = $conn->prepare($query);
+    
+    if ($stmt) {
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result && $result->num_rows == 1) {
+            $row = $result->fetch_assoc();
             $hashedPassword = $row['password'];
             
             if (password_verify($password, $hashedPassword)) {
@@ -20,16 +23,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("location: index.php");
                 exit();
             } else {
-                $estadoPeticion="Su contraseña no es correcta";
+                $estadoPeticion = "Su contraseña no es correcta";
             }
         } else {
-            $estadoPeticion="Este usuario no existe o no tiene los privilegios requeridos";
+            $estadoPeticion = "Este usuario no existe o no tiene los privilegios requeridos";
         }
+        
+        $stmt->close();
     } else {
-        $estadoPeticion= "No se puede procesar su solicitud en estos momentos";
+        $estadoPeticion = "No se puede procesar su solicitud en estos momentos";
     }
 }
 ?>
+
 </html>
 <!DOCTYPE html>
 <html lang="es">

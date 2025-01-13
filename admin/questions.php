@@ -1,7 +1,6 @@
 <?php
 include '../admin/dbconf.php';
 include 'answnum.php';
-
 session_start();
 
 if (!isset($_SESSION['godMode'])) {
@@ -11,25 +10,23 @@ if (!isset($_SESSION['godMode'])) {
 
 $email = $_SESSION['godMode'];
 
-$videos = "SELECT id, title, description, s3url, type, created_on FROM videos";
-$stmtvideos = $conn->prepare($videos);
-$stmtvideos->execute();
-$resultvideos = $stmtvideos->get_result();
-
+$contact = "SELECT id, name, surname, email, question, answered FROM contact_form WHERE answered = 0";
+$stmtcontact = $conn->prepare($contact);
+$stmtcontact->execute();
+$resultcontact = $stmtcontact->get_result();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $videoID= $_POST['videoID'];
-    $sqlDel= "DELETE FROM videos WHERE id = ?";
-    $stmtdelete = $conn->prepare($sqlDel);
-    $stmtdelete->bind_param("i", $videoID);
-    if ($stmtdelete->execute()) {
-        header('Location: index.php');
-    } else {
-        echo ("<script>alert(Error al eliminar el video seleccionado)</script>");
+    $formID = $_POST['answerID'];
+    $sqlUpdAnswer = "UPDATE contact_form SET answered = 1 WHERE id = ?";
+    $stmtUpdAnswer = $conn->prepare($sqlUpdAnswer);
+    $stmtUpdAnswer->bind_param("i", $formID);
+    if ($stmtUpdAnswer->execute()) {
+        header('Location: questions.php');
+        exit();
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -59,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             Gestion Contenido
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item active" href="#">Mostrar Videos</a></li>
+                            <li><a class="dropdown-item" href="index.php">Mostrar Videos</a></li>
                             <li><a class="dropdown-item" href="addvideo.php">Añadir Video</a></li>
                         </ul>
                     </li>
@@ -67,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="nav-link" href="usermanager.php">Gestionar Usuarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="questions.php">Preguntas <span class="badge badge-light"><?php echo $unanswered ?></span></a>
+                        <a class="nav-link active" href="#">Preguntas <span class="badge badge-light"><?php echo $unanswered ?></span></a>
                     </li>
                 </ul>
             </div>
@@ -76,33 +73,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </nav>
     <div class="container spacingWebFix">
     <h5 class="text-center">
-        <strong>Listado de videos subidos</strong>
+        <strong>Ver las preguntas enviadas por los usuarios</strong>
     </h5>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Titulo</th>
-                    <th>Descripcion</th>
-                    <th>Tipo</th>
-                    <th>Fecha de Subida</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo Electronico</th>
+                    <th>Pregunta</th>
                     <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                if ($resultvideos && $resultvideos->num_rows > 0) {
-                    while ($row = $resultvideos->fetch_assoc()) {
+                if ($resultcontact && $resultcontact->num_rows > 0) {
+                    while ($row = $resultcontact->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['title']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['description']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['type']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['created_on']) . "</td>";
-                        echo '<td><a href="' . htmlspecialchars($row['s3url']) . '" class="btn btn-primary">Ver Recurso</a> <form method="post"><button type="submit" name="videoID" value="' . htmlspecialchars($row['id']) . '" class="btn btn-danger">Eliminar</button></form></td>';
+                        echo "<td>" . htmlspecialchars($row['name']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['surname']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+                        echo "<td><textarea readonly disabled style='resize: none;' rows='4'>". htmlspecialchars($row['question']) . "</textarea>";
+                        echo '<td><form method="post"><button type="submit" name="answerID" value="' . htmlspecialchars($row['id']) . '" class="btn btn-success">Marcar como respondido</button></form></td>';
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='5' class='text-center'>No existen videos en la plataforma.</td></tr>";
+                    echo "<tr><td colspan='5' class='text-center'>No existen solicitudes pendientes</td></tr>";
                 }
                 ?>
             </tbody>

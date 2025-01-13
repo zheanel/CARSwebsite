@@ -1,5 +1,7 @@
 <?php
 include '../admin/dbconf.php';
+include 'answnum.php';
+
 session_start();
 
 if (!isset($_SESSION['godMode'])) {
@@ -70,6 +72,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Gestionar Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="questions.php">Preguntas <span class="badge badge-light"><?php echo $unanswered ?></span></a>
                     </li>
                 </ul>
             </div>

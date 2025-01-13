@@ -1,5 +1,6 @@
 <?php
 include '../admin/dbconf.php';
+include 'answnum.php';
 session_start();
 $estadoPeticion = "";
 $tipoEstado = "alert-danger";
@@ -19,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $uploadVideo = "INSERT INTO videos (title, description, s3url, type) VALUES (?, ?, ?, ?)";
     $stmtvideoUpload = $conn->prepare($uploadVideo);
     $stmtvideoUpload->bind_param("ssss", $title, $description, $s3url, $type);
-    $resultvideoUpload = $stmtvideoUpload->get_result();
 
     if ($stmtvideoUpload->execute()) {
         $tipoEstado = "alert-success";
@@ -64,6 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="usermanager.php">Gestionar Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="questions.php">Preguntas <span class="badge badge-light"><?php echo $unanswered ?></span></a>
                     </li>
                 </ul>
             </div>

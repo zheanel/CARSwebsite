@@ -1,3 +1,24 @@
+<?php
+$estadoPeticion = "";
+$tipoEstado = "alert-danger";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    include 'admin/dbconf.php';
+    $name = trim($_POST['name']);
+    $surname = trim($_POST['surname']);
+    $email = trim($_POST['email']);
+    $question = trim($_POST['question']);
+    $addQuestion = "INSERT INTO contact_form (name, surname, email, question) VALUES (?, ?, ?, ?)";
+    $stmtaddQuestion = $conn->prepare($addQuestion);
+    $stmtaddQuestion->bind_param("ssss", $name, $surname, $email, $question);
+    if ($stmtaddQuestion->execute()) {
+        $tipoEstado = "alert-success";
+        $estadoPeticion = "¡Enviado con exito! Pronto recibiras una respuesta 😊";
+    } else {
+        $estadoPeticion = "Se ha producido un error al enviar el formulario, intentalo mas tarde.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -31,34 +52,46 @@
                     </li>
                 </ul>
             </div>
-            <button type="button" class="btn btn-info" onclick="location.href = 'clientarea/signin.php';">Area de Clientes</button>
+            <button type="button" class="btn btn-info" onclick="location.href = 'clientarea/signin.php';">Area de
+                Clientes</button>
         </div>
     </nav>
     <div class="container spacingWebFix">
         <h2 class="text-center">Formulario de Contacto</h2>
-            <form>
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" aria-label="name" aria-describedby="addon-wrapping" required>
-                </div>
-                <div class="mb-3">
-                    <label for="apellido" class="form-label">Apellido</label>
-                    <input type="text" class="form-control" id="apellido" aria-label="surname" aria-describedby="addon-wrapping">
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Correo Electronico</label>
-                  <input type="email" class="form-control" id="email" aria-describedby="emailHelp" required>
-                </div>
-                <div class="mb-3">
-                    <label for="duda" class="form-label">Escribe aqui:</label>
-                    <textarea class="form-control" id="duda" rows="3" required></textarea>
-                  </div>
-                <div class="mb-3 form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
-                  <label class="form-check-label" for="exampleCheck1">Al enviar este formulario, acepto el tratamiento de los datos facilitados a CARS S.L para fines de comunicacion</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Enviar</button>
-              </form>
+        <?php if (!empty($estadoPeticion)): ?>
+            <div class="alert <?php echo $tipoEstado ?>" role="alert">
+                <?php echo htmlspecialchars($estadoPeticion); ?>
+            </div>
+        <?php endif; ?>
+        <form method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" aria-label="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="surname" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="surname" name="surname" aria-label="surname">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
+                <small id="emailHelp" class="form-text text-muted">Nunca compartiremos tu correo electrónico con
+                    nadie.</small>
+            </div>
+            <div class="mb-3">
+                <label for="question" class="form-label">Escribe aquí:</label>
+                <textarea class="form-control" id="question" name="question" rows="3" required></textarea>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="terms" required>
+                <label class="form-check-label" for="exampleCheck1">
+                    Al enviar este formulario, acepto el tratamiento de los datos facilitados a CARS S.L para fines de
+                    comunicación.
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+
     </div>
 
 

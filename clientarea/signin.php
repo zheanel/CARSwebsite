@@ -2,19 +2,22 @@
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include '../admin/dbconf.php';        
-    $email = mysqli_real_escape_string($conn, $_POST['emailForm']);
-    $password = mysqli_real_escape_string($conn, $_POST['passwdForm']);
+    $email = trim($_POST['emailForm']);
+    $password = trim($_POST['passwdForm']);
 
-    $query = "SELECT * FROM users WHERE email='$email' LIMIT 1";
-    $result = mysqli_query($conn, $query);
-    $estadoPeticion= "";
+    $query = "SELECT * FROM users WHERE email = ? LIMIT 1";
+    $stmt = $conn->prepare($query);
 
-    if ($result) {
-        if (mysqli_num_rows($result) == 1) {
-            $row = mysqli_fetch_assoc($result);
-            
+    if ($stmt) {
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $estadoPeticion = "";
+
+        if ($result && $result->num_rows == 1) {
+            $row = $result->fetch_assoc();
             $hashedPassword = $row['password'];
-            
+
             if (password_verify($password, $hashedPassword)) {
                 $_SESSION['emailAccount'] = $email;
                 header("location: index.php");
@@ -25,6 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $estadoPeticion = "Correo electronico no valido";
         }
+
+        $stmt->close();
     } else {
         $estadoPeticion = "No hemos podido procesar tu peticion en estos momentos";
     }

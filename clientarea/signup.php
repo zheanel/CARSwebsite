@@ -1,13 +1,13 @@
 <?php
 include '../admin/dbconf.php';
-$estadoPeticion= "";
+$estadoPeticion = "";
 $tipoEstado = "alert-danger";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['nameForm'];
-    $surname = $_POST['surnameForm'];
-    $email = $_POST['emailForm'];
-    $password = $_POST['passwdForm'];
+    $name = trim($_POST['nameForm']);
+    $surname = trim($_POST['surnameForm']);
+    $email = trim($_POST['emailForm']);
+    $password = trim($_POST['passwdForm']);
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     $checkEmailStmt = $conn->prepare("SELECT email FROM users WHERE email = ?");
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("ssss", $name, $surname, $email, $hashed_password);
 
         if ($stmt->execute()) {
-            $tipoEstado="alert-success";
+            $tipoEstado = "alert-success";
             $estadoPeticion = "¡Cuenta creada con exito!";
         } else {
             $estadoPeticion = "No hemos podido crear tu cuenta, contacta con nosotros para mas informacion";
@@ -35,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
