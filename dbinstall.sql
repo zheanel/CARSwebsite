@@ -52,12 +52,14 @@ ALTER TABLE `videos`
 
 
 ALTER TABLE `contact_form`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 ALTER TABLE `videos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 
 ALTER TABLE `transactions`
   ADD CONSTRAINT `fk_transactions_users` FOREIGN KEY (`userid`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
+
+INSERT INTO USERS (name, surname, email, password, isadmin) VALUES ("GlobalAdmin", "CARS", "superadmin@cars.local", "$2y$10$tD13eX4u38vhnS9EJoM9Aey5Fc5NQy.qdx8eCG32UcWaJ6qZC9pLa", 1)
