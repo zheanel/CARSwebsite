@@ -39,7 +39,7 @@
         <div class="container" id="header_txt">
             <h1 class="display-4">CARS | Opiniones y Guias</h1>
             <p class="lead">Nosotros manejamos la información, tú el volante.</p>
-            <a href="reviews.html" class="btn btn-primary btn-lg mt-3">Explorar Contenido</a>
+            <a href="reviews.php" class="btn btn-primary btn-lg mt-3">Explorar Contenido</a>
         </div>
     </header>
 
