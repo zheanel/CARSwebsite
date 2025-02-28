@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "carsdb";
+$servername = "<db_host>";
+$username = "<db_user>";
+$password = "<db_passwd>";
+$dbname = "<db_name>";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
